@@ -1,0 +1,5 @@
+.vscode
+api.sln
+api/bin
+api/obj
+api/api.csproj
