@@ -41,6 +41,9 @@ app.MapGet("/satellite", async (SatelliteDbContext db) => await db.Satellites.To
 app.MapGet("/satellite/{name}", async (string name, SatelliteDbContext db) =>
 await db.Satellites.SingleOrDefaultAsync(x => x.Name == name));
 
+app.MapGet("/satellite/{id:int}", async (int id, SatelliteDbContext db) =>
+await db.Satellites.SingleOrDefaultAsync(x => x.Id == id));
+
 app.MapPost("/satellite", async (SatelliteDbContext db, Satellite satellite) =>
 {
     db.Satellites.Add(satellite);
@@ -51,6 +54,18 @@ app.MapPost("/satellite", async (SatelliteDbContext db, Satellite satellite) =>
 app.MapDelete("/satellite/{name}", async (string name, SatelliteDbContext context) =>
 {
     var satellite = await context.Satellites.SingleOrDefaultAsync(x => x.Name == name);
+    if (satellite == null)
+    {
+        return Results.NotFound("Entry not found!");
+    }
+    context.Satellites.Remove(satellite);
+    await context.SaveChangesAsync();
+    return Results.Ok();
+});
+
+app.MapDelete("/satellite/{id:int}", async (int id, SatelliteDbContext context) =>
+{
+    var satellite = await context.Satellites.SingleOrDefaultAsync(x => x.Id == id);
     if (satellite == null)
     {
         return Results.NotFound("Entry not found!");
