@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using NOAA_API.Models;
 
-namespace NOAA_Track.Data
+namespace NOAA_API.Data
 {
-    public class SatelliteContext : DbContext
+    public class SatelliteDbContext : DbContext
     {
-        public SatelliteContext(DbContextOptions<SatelliteContext> options) : base(options) { }
+        public SatelliteDbContext(DbContextOptions<SatelliteDbContext> options) : base(options) { }
 
         public DbSet<Satellite> Satellites { get; set; }
     }
