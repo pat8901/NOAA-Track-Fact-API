@@ -7,6 +7,10 @@
 ## Docker
 
 ## TODO
+    setup database 
+    create api endpoints
+    setup docker container
+    
 
 ## License
 
