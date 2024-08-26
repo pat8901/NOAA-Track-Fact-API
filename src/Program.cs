@@ -44,11 +44,18 @@ await db.Satellites.SingleOrDefaultAsync(x => x.Name == name));
 app.MapGet("/satellite/{id:int}", async (int id, SatelliteDbContext db) =>
 await db.Satellites.SingleOrDefaultAsync(x => x.Id == id));
 
-app.MapPost("/satellite", async (SatelliteDbContext db, Satellite satellite) =>
+app.MapPost("/satellite/add", async (string? name, SatelliteDbContext context, Satellite satellite) =>
 {
-    db.Satellites.Add(satellite);
-    await db.SaveChangesAsync();
-    return Results.Ok(await db.Satellites.ToListAsync());
+    var response = await context.Satellites.Where(x => x.Name == name).FirstOrDefaultAsync();
+    Console.WriteLine(response);
+    if (response is not null)
+    {
+        return Results.Conflict("Satellite can not be added if it already exist.");
+    }
+
+    context.Satellites.Add(satellite);
+    await context.SaveChangesAsync();
+    return Results.Ok(await context.Satellites.ToListAsync());
 });
 
 app.MapDelete("/satellite/{name}", async (string name, SatelliteDbContext context) =>
