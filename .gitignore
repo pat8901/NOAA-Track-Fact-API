@@ -3,3 +3,4 @@ api.sln
 src/bin
 src/obj
 src/api.csproj
+src/Migrations
